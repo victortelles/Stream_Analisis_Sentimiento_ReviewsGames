@@ -12,3 +12,8 @@ def download_nltk_resources():
             nltk.data.find(f'tokenizers/{resource}')
         except LookupError:
             nltk.download(resource)
+
+# Obtener n-gramas de un texto
+def get_ngrams(text, n=2, language='spanish'):
+    tokens = nltk.word_tokenize(text.lower(), language=language)
+    return list(ngrams(tokens, n))
