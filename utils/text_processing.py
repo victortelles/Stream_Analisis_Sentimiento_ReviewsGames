@@ -13,6 +13,14 @@ def download_nltk_resources():
         except LookupError:
             nltk.download(resource)
 
+# Limpiar texto (eliminar palabras con stopwords y caracteres no alfabéticos)
+def clean_text(text, language='spanish'):
+    download_nltk_resources()
+    stop_words = set(stopwords.words(language))
+    words = nltk.word_tokenize(text.lower(), language=language)
+    clean_words = [word for word in words if word not in stop_words and word.isalpha()]
+    return clean_words
+
 # Obtener n-gramas de un texto
 def get_ngrams(text, n=2, language='spanish'):
     tokens = nltk.word_tokenize(text.lower(), language=language)
