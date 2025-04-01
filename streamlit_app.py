@@ -37,6 +37,10 @@ with col2:
 with col3:
     num_per_page = st.slider("Número de reseñas", min_value=10, max_value=100, value=100, step=1)
 
+#==============================================================================================================
+#==================================== Seccion 1: Obtener Reseñas ==============================================
+#==============================================================================================================
+
 # Botón para obtener las reseñas
 if st.button("Obtener Reseñas"):
     with st.spinner("Descargando reseñas de Steam..."):
@@ -86,3 +90,48 @@ with st.expander("Ver primeras filas del DataFrame"):
         st.dataframe(simple_df.head())
     else:
         st.warning("El DataFrame no contiene la columna 'review' esperada.")
+
+#==============================================================================================================
+#==================================== Seccion 2: Analisis de sentimiento ======================================
+#==============================================================================================================
+
+# Seccion de analisis de sentimiento
+st.header("Analisis de sentimiento")
+
+# Creando columna de  'sentiment' basandonos de la columna de 'voted_up'
+if 'voted_up' in df_reviews.columns:
+    df_reviews['sentiment'] = df_reviews['voted_up'].apply(lambda x: 'Positive' if x else 'Negative')
+
+    # contar la cantidad de reseñas por sentimiento
+    sentiment_counts = df_reviews['sentiment'].value_counts()
+
+    #Graficar el resultado (pastel)
+    fig, ax = plt.subplots(figsize = (3, 3))
+    ax.pie(sentiment_counts, labels= sentiment_counts.index, autopct='%1.1f', startangle=90)
+    ax.axis('equal')
+    ax.set_title(f'Porcentaje de reseñas del juego {st.session_state.game_id} en steam')
+    st.pyplot(fig)
+
+    #Mostrar conteo exacto
+    st.write('Conteo de Sentimientos:')
+    st.write(pd.DataFrame(sentiment_counts).transpose())
+else:
+    st.warning("No se encontro la columna 'voted_up' en los datos.")
+
+#==============================================================================================================
+#==================================== Seccion 3: Reseñas Largas / Cortas ======================================
+#==============================================================================================================
+
+# Seccion de reseñas largas y cortas
+st.header("Reseñas largas y cortas")
+
+if 'review' in df_reviews.columns and len(df_reviews) > 0:
+    #Calcular longitud de cada reseña
+    df_reviews['review_length'] = df_reviews['review'].apply(len)
+
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader('Reseña mas larga')
+        longest_review = df_reviews.loc[df_reviews['review_length'].idxmax()]['review']
+        st.text_area("", longest_review, height=200, disabled=True)
