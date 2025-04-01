@@ -35,4 +35,54 @@ with col1:
 with col2:
     language = st.selectbox("Idioma de las reseñas", ["spanish", "english", "french", "german"], index=0)
 with col3:
-    num_per_page = st.slider("Número de reseñas", min_value=10, max_value=100, value=100, step=10)
+    num_per_page = st.slider("Número de reseñas", min_value=10, max_value=100, value=100, step=1)
+
+# Botón para obtener las reseñas
+if st.button("Obtener Reseñas"):
+    with st.spinner("Descargando reseñas de Steam..."):
+        # URL de la API de Steam para obtener reseñas
+        url = f"https://store.steampowered.com/appreviews/{id_game}?json=1&language={language}&num_per_page={num_per_page}"
+
+        try:
+            # Realizar la solicitud a la API
+            response = requests.get(url)
+            data = response.json()
+
+            # Extraer las reseñas del JSON
+            reviews = data.get('reviews', [])
+
+            if not reviews:
+                st.error("No se encontraron reseñas para este juego con los parámetros especificados.")
+                st.stop()
+
+            # Crear un DataFrame a partir de las reseñas
+            df_reviews = pd.DataFrame(reviews)
+
+            # Guardar el DataFrame en la sesión
+            st.session_state.df_reviews = df_reviews
+            st.session_state.game_id = id_game
+
+            st.success(f"Se han descargado {len(reviews)} reseñas correctamente!")
+        except Exception as e:
+            st.error(f"Error al obtener las reseñas: {str(e)}")
+            st.stop()
+
+# Verificar si el DataFrame esta en la sesion
+if 'df_reviews' not in st.session_state:
+    st.info("Por favor, obten las reseñas primero usando el boton de arriba.")
+    st.stop()
+
+df_reviews = st.session_state.df_reviews
+
+# Mostrar informacion basica del dataframe
+st.header("Informacion del Dataset")
+st.write(f"Numero de reseñas: {len(df_reviews)}")
+
+# Mostrar las primeras filas del Dataframe
+with st.expander("Ver primeras filas del DataFrame"):
+    st.write("Columnas principales del Dataframe:")
+    if 'review' in df_reviews.columns:
+        simple_df = df_reviews[['review', 'voted_up', 'author', 'timestamp_created']]
+        st.dataframe(simple_df.head())
+    else:
+        st.warning("El DataFrame no contiene la columna 'review' esperada.")
