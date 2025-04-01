@@ -185,7 +185,7 @@ if 'review' in df_reviews.columns:
         st.metric("Promedio de palabras por reseñas", round(text_stats['word_count'] / len(df_reviews), 2))
 
 #==============================================================================================================
-#==================================== Seccion 5: Palabras comunes ========================================
+#==================================== Seccion 5: Palabras comunes =============================================
 #==============================================================================================================
 
 #Palabras comunes
@@ -206,3 +206,20 @@ if 'review' in df_reviews.columns:
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
+#==============================================================================================================
+#==================================== Seccion 6: Palabras Unicas ==============================================
+#==============================================================================================================
+# Sección de palabras únicas
+st.header("Palabras Únicas")
+
+if 'review' in df_reviews.columns:
+    # Obtener palabras que aparecen solo una vez
+    rare_words = [word for word, count in word_freq.items() if count == 1]
+
+    if len(rare_words) > 20:
+        sample_rare = random.sample(rare_words, 20)
+        st.write(f"Mostrando de 20 palabras únicas (de un total de {len(rare_words)}):")
+        st.write(", ".join(sample_rare))
+    else:
+        st.write(f"Palabras que aparecen solo una vez ({len(rare_words)}):")
+        st.write(", ".join(rare_words))
