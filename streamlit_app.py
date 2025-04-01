@@ -130,8 +130,34 @@ if 'review' in df_reviews.columns and len(df_reviews) > 0:
     df_reviews['review_length'] = df_reviews['review'].apply(len)
 
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader('Reseña mas larga')
         longest_review = df_reviews.loc[df_reviews['review_length'].idxmax()]['review']
         st.text_area("", longest_review, height=200, disabled=True)
+
+    with col2:
+        st.subheader('Reseña mas corta')
+        min_length_review = df_reviews.loc[df_reviews['review_length'].idxmin()]['review']
+        st.text_area("", min_length_review, height=200, disabled=True)
+
+    # Reseña aleatoria
+    st.subheader('Reseña aleatoria')
+    if st.button("Selecciona Reseña Aleatria"):
+        random_index = random.randint(0, len(df_reviews) - 1)
+        st.session_state.random_review = df_reviews['review'][random_index]
+        st.session_state.random_index = random_index
+
+    if 'random_review' not in st.session_state:
+        random_index = random.randint(0, len(df_reviews)-1)
+        st.session_state.random_review = df_reviews['review'][random_index]
+        st.session_state.random_index = random_index
+
+    st.text_area("Reseña original", st.session_state.random_review, height=150, disabled=True)
+
+    # Tokenizar y limpiar la reseña
+    clean_words = clean_text(st.session_state.random_review, language=language)
+    clean_review = " ".join(clean_words)
+
+    st.text_area("Reseña limpia (Sin storwords)", clean_review, height=150, disabled=True)
+
