@@ -42,3 +42,7 @@ def get_text_stats(text, language='spanish'):
         'most_common': most_common_words,
         'clean_tokens': clean_tokens
     }
+
+# Buscar patrones con regex
+def find_pattern(text, pattern):
+    return re.findall(pattern, text)
