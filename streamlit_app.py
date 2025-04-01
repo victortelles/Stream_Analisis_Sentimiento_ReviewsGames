@@ -191,3 +191,18 @@ if 'review' in df_reviews.columns:
 #Palabras comunes
 st.header("Palabras Comunes")
 
+if 'review' in df_reviews.columns:
+    # Usar estadisticas previamente calculadas
+    word_freq = Counter(text_stats['clean_tokens'])
+    most_common_words = word_freq.most_common(10)
+    words, counts = zip(*most_common_words)
+
+    #graficar las palabras mas frecuentes
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.barplot(x=list(words), y=list(counts), ax=ax)
+    ax.set_title("Palabras mas repetidas en las reseñas")
+    ax.set_xlabel("Palabra")
+    ax.set_ylabel("Frecuencia")
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+
