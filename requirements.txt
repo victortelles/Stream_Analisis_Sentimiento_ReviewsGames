@@ -1,0 +1,8 @@
+streamlit
+nltk
+pandas
+matplotlib
+seaborn
+requests
+pillow
+wordcloud
