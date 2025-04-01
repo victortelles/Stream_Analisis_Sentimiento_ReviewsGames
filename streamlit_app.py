@@ -155,9 +155,39 @@ if 'review' in df_reviews.columns and len(df_reviews) > 0:
 
     st.text_area("Reseña original", st.session_state.random_review, height=150, disabled=True)
 
+#==================================== Uso de Stopwords ======================================
     # Tokenizar y limpiar la reseña
     clean_words = clean_text(st.session_state.random_review, language=language)
     clean_review = " ".join(clean_words)
 
     st.text_area("Reseña limpia (Sin storwords)", clean_review, height=150, disabled=True)
+
+#==============================================================================================================
+#==================================== Seccion 4: Estadisticas de texto ========================================
+#==============================================================================================================
+
+#Estadisticas de texto
+st.header("Numero de palabras")
+
+if 'review' in df_reviews.columns:
+    #juntar todas las reseñas en un solo texto
+    all_reviews = " ".join(df_reviews['review'].tolist())
+
+    #Obtener estadisticas de texto
+    text_stats = get_text_stats(all_reviews, language=language)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Total de palabras", text_stats['word_count'])
+    with col2:
+        st.metric("Palabras unicas", text_stats['unique_count'])
+    with col3:
+        st.metric("Promedio de palabras por reseñas", round(text_stats['word_count'] / len(df_reviews), 2))
+
+#==============================================================================================================
+#==================================== Seccion 5: Palabras comunes ========================================
+#==============================================================================================================
+
+#Palabras comunes
+st.header("Palabras Comunes")
 
