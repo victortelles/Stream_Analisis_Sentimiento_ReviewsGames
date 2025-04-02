@@ -6,3 +6,5 @@ seaborn
 requests
 pillow
 wordcloud
+random
+re
