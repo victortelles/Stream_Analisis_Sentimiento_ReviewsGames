@@ -325,8 +325,51 @@ if 'random_review' in st.session_state:
         else:
             st.write("No se encontraron quintu-gramas en esta reseña.")
 
+
+
 #==============================================================================================================
-#==================================== Seccion 10: Expresiones regulares =======================================
+#==================================== Seccion 10: Expresiones regulares========================================
+#==============================================================================================================
+# Sección de análisis con expresiones regulares
+st.header("Análisis con Expresiones Regulares")
+
+if 'review' in df_reviews.columns:
+    col1, col2 = st.columns([3, 1])
+
+    with col1:
+        regex_pattern = st.text_input("Introduce una expresión regular", r'\b[Mm]onster\b')
+
+    with col2:
+        search_in = st.radio("Buscar en:", ["Reseña aleatoria", "Todas las reseñas"])
+
+    if regex_pattern:
+        try:
+            if search_in == "Reseña aleatoria":
+                if 'random_review' in st.session_state:
+                    matches = find_pattern(st.session_state.random_review, regex_pattern)
+                    st.write(f"Coincidencias encontradas en la reseña aleatoria: {len(matches)}")
+                    if matches:
+                        st.write(matches)
+                    else:
+                        st.write("No se encontraron coincidencias en esta reseña.")
+            else:
+                all_text = " ".join(df_reviews['review'].tolist())
+                matches = find_pattern(all_text, regex_pattern)
+                st.write(f"Coincidencias encontradas en todas las reseñas: {len(matches)}")
+                if matches:
+                    if len(matches) > 100:
+                        st.write(f"Mostrando las primeras 100 de {len(matches)} coincidencias:")
+                        st.write(matches[:100])
+                    else:
+                        st.write(matches)
+                else:
+                    st.write("No se encontraron coincidencias.")
+        except Exception as e:
+            st.error(f"Error en la expresión regular: {str(e)}")
+
+
+#==============================================================================================================
+#==================================== Seccion 11: Limpieza (stopwords) ========================================
 #==============================================================================================================
 # Sección de eliminación de stopwords
 st.header("Eliminación de Stopwords")
@@ -363,10 +406,10 @@ if 'random_review' in st.session_state:
     if common_stops:
         st.write(", ".join(list(common_stops)[:30]) + ("..." if len(common_stops) > 30 else ""))
 
-# Sección final con los requisitos del proyecto
+# Autores
 st.header("Creado por:")
 st.markdown(""" 737066 | Victor M. Telles A. | (AHTyler)""")
 
-# Agregar footer
+# Footer
 st.markdown("---")
-st.write("Desarrollado con Streamlit para el análisis de sentimientos en reseñas de Steam")
+st.write("Desarrollado con Streamlit para el análisis de sentimientos en reseñas de Steam (Proyecto de lenguaje procesamiento natural)")
