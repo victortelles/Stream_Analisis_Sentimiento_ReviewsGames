@@ -4,16 +4,21 @@ import os
 from nltk.corpus import stopwords
 from nltk import ngrams
 from collections import Counter
-
-
-# Modificar para definir un directorio de recursos
-nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')  # Aquí se especifica el directorio local
+nltk.download('stopwords')
+nltk.download('punkt')
 
 # Descargar recursos de NLTK necesarios
 def download_nltk_resources():
-    if not os.path.exists(nltk_data_dir):
-        os.makedirs(nltk_data_dir)  # Crear la carpeta nltk_data si no existe
+    resources = {
+        'stopwords': 'corpora/stopwords',
+        'punkt': 'tokenizers/punkt'
+    }
 
+    for resource, path in resources.items():
+        try:
+            nltk.data.find(path)
+        except LookupError:
+            nltk.download(resource)
 
 # Limpiar texto (eliminar palabras con stopwords y caracteres no alfabéticos)
 def clean_text(text, language='spanish'):
