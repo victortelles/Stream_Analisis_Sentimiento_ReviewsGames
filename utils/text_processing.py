@@ -4,6 +4,9 @@ from nltk.corpus import stopwords
 from nltk import ngrams
 from collections import Counter
 
+nltk.download('punkt')
+nltk.download('stopwords')
+
 # Descargar recursos de NLTK necesarios
 def download_nltk_resources():
     resources = ['stopwords', 'punkt']
@@ -15,7 +18,7 @@ def download_nltk_resources():
 
 # Limpiar texto (eliminar palabras con stopwords y caracteres no alfabéticos)
 def clean_text(text, language='spanish'):
-    download_nltk_resources()
+    #download_nltk_resources()
     stop_words = set(stopwords.words(language))
     words = nltk.word_tokenize(text.lower(), language=language)
     clean_words = [word for word in words if word not in stop_words and word.isalpha()]
