@@ -10,7 +10,7 @@ from collections import Counter
 from wordcloud import WordCloud
 from nltk.corpus import stopwords
 import io
-from  utils.text_processing import clean_text, get_ngrams, get_text_stats, find_pattern, download_nltk_resources
+from  utils.text_processing import clean_text, get_ngrams, get_text_stats, find_pattern #download_nltk_resources
 
 # Configuración inicial de la página
 st.set_page_config(
