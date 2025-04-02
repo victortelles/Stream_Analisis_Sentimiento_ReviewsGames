@@ -1,22 +1,15 @@
 import nltk
 import re
-import os
 from nltk.corpus import stopwords
 from nltk import ngrams
 from collections import Counter
-nltk.download('stopwords')
-nltk.download('punkt')
 
 # Descargar recursos de NLTK necesarios
 def download_nltk_resources():
-    resources = {
-        'stopwords': 'corpora/stopwords',
-        'punkt': 'tokenizers/punkt'
-    }
-
-    for resource, path in resources.items():
+    resources = ['stopwords', 'punkt']
+    for resource in resources:
         try:
-            nltk.data.find(path)
+            nltk.data.find(f'tokenizers/{resource}')
         except LookupError:
             nltk.download(resource)
 
