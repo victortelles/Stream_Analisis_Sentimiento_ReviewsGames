@@ -10,7 +10,7 @@ from collections import Counter
 from wordcloud import WordCloud
 from nltk.corpus import stopwords
 import io
-from  utils.text_processing import clean_text, get_ngrams, get_text_stats, find_pattern #download_nltk_resources
+from  utils.text_processing import clean_text, get_ngrams, get_text_stats, find_pattern, download_nltk_resources
 
 # Configuración inicial de la página
 st.set_page_config(
@@ -24,9 +24,7 @@ st.title("Análisis de Sentimientos en Reseñas de Steam")
 st.markdown("Este es un proyecto para practicar el procesamiento de lenguaje natural con reseñas de videojuegos de la API de Steam.")
 
 # Asegurar que los recursos de NLTK estén descargados
-nltk.download('punkt')
-nltk.download('stopwords')
-#download_nltk_resources()
+download_nltk_resources()
 
 # Sección de configuración
 st.header("Configuración")

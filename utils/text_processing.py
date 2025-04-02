@@ -1,26 +1,23 @@
 import nltk
 import re
+import os
 from nltk.corpus import stopwords
 from nltk import ngrams
 from collections import Counter
 
-nltk.download('punkt')
-nltk.download('stopwords')
+
+# Modificar para definir un directorio de recursos
+nltk_data_dir = os.path.join(os.getcwd(), 'nltk_data')  # Aquí se especifica el directorio local
 
 # Descargar recursos de NLTK necesarios
 def download_nltk_resources():
-    resources = ['stopwords', 'punkt']
-    for resource in resources:
-        try:
-            nltk.data.find(f'tokenizers/{resource}')
-        except LookupError:
-            nltk.download(resource)
+    if not os.path.exists(nltk_data_dir):
+        os.makedirs(nltk_data_dir)  # Crear la carpeta nltk_data si no existe
+
 
 # Limpiar texto (eliminar palabras con stopwords y caracteres no alfabéticos)
 def clean_text(text, language='spanish'):
-    #download_nltk_resources()
-    nltk.download('punkt')
-    nltk.download('stopwords')
+    download_nltk_resources()
     stop_words = set(stopwords.words(language))
     words = nltk.word_tokenize(text.lower(), language=language)
     clean_words = [word for word in words if word not in stop_words and word.isalpha()]
@@ -33,9 +30,7 @@ def get_ngrams(text, n=2, language='spanish'):
 
 # Calcular estadísticas de texto
 def get_text_stats(text, language='spanish'):
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    #download_nltk_resources()
+    download_nltk_resources()
     tokens = nltk.word_tokenize(text.lower(), language=language)
     word_count = len(tokens)
 
