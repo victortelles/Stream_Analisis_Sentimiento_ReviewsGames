@@ -28,6 +28,7 @@ download_nltk_resources()
 
 # Sección de configuración
 st.header("Configuración")
+st.markdown("*Para sacar el **ID del juego** ve a la tienda de [STEAM](https://store.steampowered.com/) y busca un juego y obten el id del juego*")
 
 col1, col2, col3 = st.columns(3)
 with col1:
