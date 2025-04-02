@@ -245,5 +245,39 @@ if 'review' in df_reviews.columns:
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.imshow(wordcloud, interpolation='bilinear')
     ax.axis('off')
+    st.pyplot(fig)
+
+#==============================================================================================================
+#==================================== Seccion 8: Distribucion de vocabulario ==================================
+#==============================================================================================================
+
+# Sección de distribución de vocabulario
+st.header("Distribución de Vocabulario")
+
+if 'review' in df_reviews.columns:
+    # Contar cuántas veces aparece cada palabra
+    word_counts = Counter(text_stats['clean_tokens'])
+
+    # Contar cuántas palabras aparecen 1 vez, 2 veces, etc.
+    frequency_distribution = Counter([count for word, count in word_counts.items()])
+
+    # Ordenar por frecuencia para el gráfico
+    sorted_freq = sorted(frequency_distribution.items())
+    x, y = zip(*sorted_freq[:20])  # Mostrar solo las primeras 20 frecuencias
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.bar(x, y)
+    ax.set_xlabel("Frecuencia de aparición")
+    ax.set_ylabel("Número de palabras")
+    ax.set_title("Distribución de frecuencia de palabras")
 
     st.pyplot(fig)
+
+    # Tabla con detalles
+    st.write("Interpretación: El eje X muestra cuántas veces aparece una palabra, y el eje Y muestra cuántas palabras distintas aparecen ese número de veces.")
+
+    dist_df = pd.DataFrame({
+        'Frecuencia de aparición': x,
+        'Número de palabras': y
+    })
+    st.dataframe(dist_df)
