@@ -333,11 +333,38 @@ if 'random_review' in st.session_state:
 # Sección de análisis con expresiones regulares
 st.header("Análisis con Expresiones Regulares")
 
+# Agregar una sección de explicación sobre expresiones regulares
+with st.expander("Guía de Expresiones Regulares", expanded=False):
+    st.markdown("""
+    ### Guía Rápida de Expresiones Regulares
+
+    Las expresiones regulares (regex) son patrones utilizados para encontrar coincidencias de caracteres dentro de cadenas de texto. Aquí hay algunos patrones comunes:
+
+    | Patrón | Descripción | Ejemplo |
+    | --- | --- | --- |
+    | `^` | Coincide con el inicio de la cadena | `^Monster` → "Monster Hunter" (sí), "The Monster" (no) |
+    | `$` | Coincide con el final de la cadena | `Hunter$` → "Monster Hunter" (sí), "Hunter Games" (no) |
+    | `..` | Coincide con cualquier carácter único | `M..nster` → "Monster", "Manster", "Mxnster" |
+    | `*` | Coincide con 0 o más repeticiones del carácter anterior | `Mo*nster` → "Mnster", "Monster", "Mooonster" |
+    | `+` | Coincide con 1 o más repeticiones del carácter anterior | `Mo+nster` → "Monster", "Mooonster" (pero no "Mnster") |
+    | `?` | Hace que el carácter anterior sea opcional | `Monste?r` → "Monster", "Monstr" |
+    | `\b` | Límite de palabra | `\\bmon\\b` → "mon" como palabra completa, no parte de otra |
+    | `[]` | Conjunto de caracteres, coincide con cualquier carácter dentro de los corchetes | `[Mm]onster` → "Monster", "monster" |
+    | `[^]` | Conjunto negado, coincide con cualquier carácter que NO esté dentro de los corchetes | `[^A-Z]` → cualquier carácter que no sea letra mayúscula |
+    | `\\d` | Coincide con cualquier dígito | `\\d+` → cualquier número |
+    | `\\w` | Coincide con cualquier carácter alfanumérico | `\\w+` → cualquier palabra |
+    | `\\s` | Coincide con cualquier espacio en blanco | `\\s+` → uno o más espacios |
+
+    ### Ejemplos prácticos:
+    - `[^b]..eno..`: Encuentra palabras que inician "b" y tengan palabras de "eno"
+    - `[^j]..g..[o$]`: Encuentra Palabras que contenga una "g" y termine con "o"
+    """)
+
 if 'review' in df_reviews.columns:
     col1, col2 = st.columns([3, 1])
 
     with col1:
-        regex_pattern = st.text_input("Introduce una expresión regular", r'\b[Mm]onster\b')
+        regex_pattern = st.text_input("Introduce una expresión regular", r'..eno..')
 
     with col2:
         search_in = st.radio("Buscar en:", ["Reseña aleatoria", "Todas las reseñas"])
