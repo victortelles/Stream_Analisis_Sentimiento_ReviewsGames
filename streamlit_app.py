@@ -281,3 +281,47 @@ if 'review' in df_reviews.columns:
         'Número de palabras': y
     })
     st.dataframe(dist_df)
+
+
+#==============================================================================================================
+#==================================== Seccion 9: N-gramas =====================================================
+#==============================================================================================================
+# Sección de n-gramas
+st.header("N-gramas")
+
+if 'random_review' in st.session_state:
+    clean_review = " ".join(clean_text(st.session_state.random_review, language=language))
+
+    tab1, tab2, tab3, tab4 = st.tabs(["Bi-gramas", "Tri-gramas", "Cuatri-gramas", "Quintu-gramas"])
+
+    with tab1:
+        bigrams = get_ngrams(clean_review, n=2, language=language)
+        st.write(f"Bi-gramas de la reseña aleatoria ({len(bigrams)} en total):")
+        if bigrams:
+            st.write(str(bigrams[:20]) + ("..." if len(bigrams) > 20 else ""))
+        else:
+            st.write("No se encontraron bi-gramas en esta reseña.")
+
+    with tab2:
+        trigrams = get_ngrams(clean_review, n=3, language=language)
+        st.write(f"Tri-gramas de la reseña aleatoria ({len(trigrams)} en total):")
+        if trigrams:
+            st.write(str(trigrams[:20]) + ("..." if len(trigrams) > 20 else ""))
+        else:
+            st.write("No se encontraron tri-gramas en esta reseña.")
+
+    with tab3:
+        cuatrigrams = get_ngrams(clean_review, n=4, language=language)
+        st.write(f"Cuatri-gramas de la reseña aleatoria ({len(cuatrigrams)} en total):")
+        if cuatrigrams:
+            st.write(str(cuatrigrams[:20]) + ("..." if len(cuatrigrams) > 20 else ""))
+        else:
+            st.write("No se encontraron cuatri-gramas en esta reseña.")
+
+    with tab4:
+        quitugrams = get_ngrams(clean_review, n=5, language=language)
+        st.write(f"Quintu-gramas de la reseña aleatoria ({len(quitugrams)} en total):")
+        if quitugrams:
+            st.write(str(quitugrams[:20]) + ("..." if len(quitugrams) > 20 else ""))
+        else:
+            st.write("No se encontraron quintu-gramas en esta reseña.")
