@@ -31,7 +31,9 @@ def get_ngrams(text, n=2, language='spanish'):
 
 # Calcular estadísticas de texto
 def get_text_stats(text, language='spanish'):
-    download_nltk_resources()
+    nltk.download('punkt')
+    nltk.download('stopwords')
+    #download_nltk_resources()
     tokens = nltk.word_tokenize(text.lower(), language=language)
     word_count = len(tokens)
 

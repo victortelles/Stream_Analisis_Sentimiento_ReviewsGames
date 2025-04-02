@@ -24,7 +24,9 @@ st.title("Análisis de Sentimientos en Reseñas de Steam")
 st.markdown("Este es un proyecto para practicar el procesamiento de lenguaje natural con reseñas de videojuegos de la API de Steam.")
 
 # Asegurar que los recursos de NLTK estén descargados
-download_nltk_resources()
+nltk.download('punkt')
+nltk.download('stopwords')
+#download_nltk_resources()
 
 # Sección de configuración
 st.header("Configuración")
