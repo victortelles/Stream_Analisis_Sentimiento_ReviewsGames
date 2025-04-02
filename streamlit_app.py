@@ -160,7 +160,7 @@ if 'review' in df_reviews.columns and len(df_reviews) > 0:
     clean_words = clean_text(st.session_state.random_review, language=language)
     clean_review = " ".join(clean_words)
 
-    st.text_area("Reseña limpia (Sin storwords)", clean_review, height=150, disabled=True)
+    st.text_area("Reseña limpia (ya aplicado stopwords)", clean_review, height=150, disabled=True)
 
 #==============================================================================================================
 #==================================== Seccion 4: Estadisticas de texto ========================================
@@ -223,3 +223,27 @@ if 'review' in df_reviews.columns:
     else:
         st.write(f"Palabras que aparecen solo una vez ({len(rare_words)}):")
         st.write(", ".join(rare_words))
+
+#==============================================================================================================
+#==================================== Seccion 7: WordCloud ====================================================
+#==============================================================================================================
+
+# Sección de WordCloud
+st.header("WordCloud")
+
+if 'review' in df_reviews.columns:
+    st.write("Nube de palabras de las reseñas (ya aplicado con stopwords):")
+
+    # Crear un texto combinado de todas las palabras limpias
+    clean_text_combined = " ".join(text_stats['clean_tokens'])
+
+    # Generar WordCloud
+    wordcloud = WordCloud(width=800, height=400, background_color='white', max_words=100, contour_width=3, contour_color='steelblue')
+    wordcloud.generate(clean_text_combined)
+
+    # Convertir la imagen a bytes para mostrarla
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.axis('off')
+
+    st.pyplot(fig)
