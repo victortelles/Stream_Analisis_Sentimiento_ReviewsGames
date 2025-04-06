@@ -1,35 +1,47 @@
 import nltk
 import re
-from nltk.corpus import stopwords
+import os
 from nltk import ngrams
 from collections import Counter
+from nltk.corpus import stopwords
+from nltk.tokenize import RegexpTokenizer
+
+# Definimos una Ruta local donde se almacenarán los recursos de nltk
+NLTK_DATA_PATH = os.path.join(os.getcwd(), "nltk_data")
+
+# Crear el directorio si no existe
+os.makedirs(NLTK_DATA_PATH, exist_ok=True)
+nltk.data.path.append(NLTK_DATA_PATH)
 
 # Descargar recursos de NLTK necesarios
 def download_nltk_resources():
-    resources = ['stopwords', 'punkt']
-    for resource in resources:
-        try:
-            nltk.data.find(f'tokenizers/{resource}')
-        except LookupError:
-            nltk.download(resource)
+    nltk.download('punkt', download_dir=NLTK_DATA_PATH)
+    nltk.download('stopwords', download_dir=NLTK_DATA_PATH)
 
 # Limpiar texto (eliminar palabras con stopwords y caracteres no alfabéticos)
 def clean_text(text, language='spanish'):
-    download_nltk_resources()
-    stop_words = set(stopwords.words(language))
-    words = nltk.word_tokenize(text.lower(), language=language)
-    clean_words = [word for word in words if word not in stop_words and word.isalpha()]
-    return clean_words
+    try:
+        stop_words = set(stopwords.words(language))
+    except LookupError:
+        download_nltk_resources()
+        stop_words = set(stopwords.words(language))
+
+    tokenizer = RegexpTokenizer(r'\w+')
+    words = tokenizer.tokenize(str(text).lower())
+    clean = [w for w in words if w not in stop_words]
+    return clean  # Retornamos lista de palabras limpias
 
 # Obtener n-gramas de un texto
 def get_ngrams(text, n=2, language='spanish'):
-    tokens = nltk.word_tokenize(text.lower(), language=language)
+    tokenizer = RegexpTokenizer(r'\w+')
+    tokens = tokenizer.tokenize(text.lower())
     return list(ngrams(tokens, n))
 
 # Calcular estadísticas de texto
 def get_text_stats(text, language='spanish'):
     download_nltk_resources()
-    tokens = nltk.word_tokenize(text.lower(), language=language)
+    tokenizer = RegexpTokenizer(r'\w+')
+    tokens = tokenizer.tokenize(text.lower())
     word_count = len(tokens)
 
     # Palabras únicas

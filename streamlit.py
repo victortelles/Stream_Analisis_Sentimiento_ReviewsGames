@@ -142,7 +142,7 @@ if 'review' in df_reviews.columns and len(df_reviews) > 0:
         st.text_area("", min_length_review, height=200, disabled=True)
 
     # Reseña aleatoria
-    st.subheader('Reseña aleatoria')
+    st.subheader('Reseña aleatoria (Aplicando Stopwords)')
     if st.button("Selecciona Reseña Aleatria"):
         random_index = random.randint(0, len(df_reviews) - 1)
         st.session_state.random_review = df_reviews['review'][random_index]
@@ -395,44 +395,6 @@ if 'review' in df_reviews.columns:
         except Exception as e:
             st.error(f"Error en la expresión regular: {str(e)}")
 
-
-#==============================================================================================================
-#==================================== Seccion 11: Limpieza (stopwords) ========================================
-#==============================================================================================================
-# Sección de eliminación de stopwords
-st.header("Eliminación de Stopwords")
-
-if 'random_review' in st.session_state:
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.subheader("Reseña Original")
-        st.write(st.session_state.random_review)
-
-        # Tokenizar para mostrar estadísticas
-        tokens_original = nltk.word_tokenize(st.session_state.random_review.lower(), language=language)
-        st.write(f"Número de palabras: {len(tokens_original)}")
-
-    with col2:
-        st.subheader("Reseña sin Stopwords")
-        clean_words = clean_text(st.session_state.random_review, language=language)
-        clean_review = " ".join(clean_words)
-        st.write(clean_review)
-        st.write(f"Número de palabras: {len(clean_words)}")
-
-    # Mostrar las stopwords que se eliminaron
-    original_set = set(tokens_original)
-    clean_set = set(clean_words)
-    removed_words = original_set - clean_set
-
-    stop_words = set(stopwords.words(language))
-    common_stops = removed_words.intersection(stop_words)
-
-    st.subheader("Stopwords eliminadas")
-    st.write(f"Se eliminaron {len(removed_words)} palabras, de las cuales {len(common_stops)} son stopwords comunes.")
-
-    if common_stops:
-        st.write(", ".join(list(common_stops)[:30]) + ("..." if len(common_stops) > 30 else ""))
 
 # Autores
 st.header("Creado por:")
